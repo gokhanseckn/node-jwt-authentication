@@ -3,9 +3,9 @@ const userService = require('../services/users.service');
 
 const router = express.Router();
 
-const authenticate = (req, res, next) => {
+const authenticate = async (req, res, next) => {
   try {
-    const user = userService.authenticate(req.body);
+    const user = await userService.authenticate(req.body);
     return user
       ? res.json(user)
       : res.status(400).json({ message: 'Username or password is incorrect!' });

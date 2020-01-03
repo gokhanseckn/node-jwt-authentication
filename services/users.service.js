@@ -4,9 +4,10 @@ const model = require('../models');
 
 const userModel = model.user;
 
-const authenticate = ({ username, pass }) => {
-  const user = userModel.findOne({
+const authenticate = async ({ username, pass }) => {
+  const user = await userModel.findOne({
     where: {
+      username,
       password: pass,
     },
   });
@@ -14,9 +15,8 @@ const authenticate = ({ username, pass }) => {
     const token = jwt.sign({ sub: user.id }, config.secret, {
       expiresIn: '1h',
     });
-    const { password, ...userWithoutPassword } = user;
+
     return {
-      ...userWithoutPassword,
       username,
       token,
     };
